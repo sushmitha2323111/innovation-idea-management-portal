@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Innovation Idea Management Portal</title>
+
+<style>
+    *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+        font-family: Arial, sans-serif;
+    }
+
+    body{
+        background:#f4f7fc;
+    }
+
+    header{
+        background:#1e3a8a;
+        color:white;
+        padding:20px;
+        text-align:center;
+    }
+
+    nav{
+        background:#2563eb;
+        padding:15px;
+        display:flex;
+        justify-content:center;
+        gap:20px;
+    }
+
+    nav a{
+        color:white;
+        text-decoration:none;
+        font-weight:bold;
+    }
+
+    .container{
+        width:90%;
+        max-width:1200px;
+        margin:30px auto;
+    }
+
+    .card{
+        background:white;
+        padding:25px;
+        border-radius:10px;
+        box-shadow:0 2px 8px rgba(0,0,0,0.1);
+        margin-bottom:30px;
+    }
+
+    h2{
+        color:#1e3a8a;
+        margin-bottom:15px;
+    }
+
+    input, textarea, select{
+        width:100%;
+        padding:12px;
+        margin:10px 0;
+        border:1px solid #ccc;
+        border-radius:5px;
+    }
+
+    button{
+        background:#2563eb;
+        color:white;
+        border:none;
+        padding:12px 20px;
+        border-radius:5px;
+        cursor:pointer;
+    }
+
+    button:hover{
+        background:#1d4ed8;
+    }
+
+    .idea-box{
+        background:#eef2ff;
+        padding:20px;
+        border-radius:8px;
+        margin-top:15px;
+        border-left:5px solid #2563eb;
+    }
+
+    .status{
+        font-weight:bold;
+        color:green;
+    }
+
+    footer{
+        text-align:center;
+        background:#1e3a8a;
+        color:white;
+        padding:15px;
+        margin-top:30px;
+    }
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>Innovation Idea Management Portal</h1>
+    <p>Submit Innovative Ideas | Get Feedback | Track Progress</p>
+</header>
+
+<nav>
+    <a href="#submit">Submit Idea</a>
+    <a href="#ideas">View Ideas</a>
+</nav>
+
+<div class="container">
+
+    <!-- Submit Idea Section -->
+    <div class="card" id="submit">
+        <h2>Submit Your Innovative Idea</h2>
+
+        <input type="text" id="studentName" placeholder="Enter Student Name">
+
+        <input type="text" id="ideaTitle" placeholder="Enter Idea Title">
+
+        <textarea id="ideaDescription"
+        placeholder="Describe your innovation idea"
+        rows="5"></textarea>
+
+        <select id="ideaCategory">
+            <option value="">Select Category</option>
+            <option>Technology</option>
+            <option>Healthcare</option>
+            <option>Education</option>
+            <option>Agriculture</option>
+            <option>Environment</option>
+        </select>
+
+        <button onclick="submitIdea()">Submit Idea</button>
+    </div>
+
+    <!-- Display Ideas -->
+    <div class="card" id="ideas">
+        <h2>Submitted Ideas</h2>
+        <div id="ideaList"></div>
+    </div>
+
+</div>
+
+<footer>
+    © 2026 Innovation Idea Management Portal
+</footer>
+
+<script>
+
+let ideas = [];
+
+function submitIdea(){
+
+    let student = document.getElementById("studentName").value;
+    let title = document.getElementById("ideaTitle").value;
+    let description = document.getElementById("ideaDescription").value;
+    let category = document.getElementById("ideaCategory").value;
+
+    if(student === "" || title === "" || description === "" || category === ""){
+        alert("Please fill all fields");
+        return;
+    }
+
+    let idea = {
+        student,
+        title,
+        description,
+        category,
+        status: "Under Review"
+    };
+
+    ideas.push(idea);
+
+    displayIdeas();
+
+    document.getElementById("studentName").value = "";
+    document.getElementById("ideaTitle").value = "";
+    document.getElementById("ideaDescription").value = "";
+    document.getElementById("ideaCategory").value = "";
+
+    alert("Idea Submitted Successfully!");
+}
+
+function displayIdeas(){
+
+    let list = document.getElementById("ideaList");
+    list.innerHTML = "";
+
+    ideas.forEach((idea,index)=>{
+
+        list.innerHTML += `
+        <div class="idea-box">
+            <h3>${idea.title}</h3>
+            <p><strong>Student:</strong> ${idea.student}</p>
+            <p><strong>Category:</strong> ${idea.category}</p>
+            <p><strong>Description:</strong> ${idea.description}</p>
+            <p class="status">Status: ${idea.status}</p>
+
+            <button onclick="approveIdea(${index})">
+            Approve
+            </button>
+
+            <button onclick="rejectIdea(${index})"
+            style="background:red;">
+            Reject
+            </button>
+        </div>
+        `;
+    });
+}
+
+function approveIdea(index){
+    ideas[index].status = "Approved";
+    displayIdeas();
+}
+
+function rejectIdea(index){
+    ideas[index].status = "Rejected";
+    displayIdeas();
+}
+
+</script>
+
+</body>
+</html>
